@@ -18,6 +18,7 @@ public class Percolation {
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        this.validateN(n);
         this.gridN = n;
         this.percolationGrid = new boolean[n][n]; // By default all elements are initialized to zero
         this.numOfOpenSites = 0;
@@ -74,6 +75,12 @@ public class Percolation {
         Percolation per = new Percolation(5);
         per.open(2, 2);
         per.open(2, 3);
+    }
+
+    private void validateN(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("Value " + n + " for n is <= 0.");
+        }
     }
 
     private void checkRowAndCol(int row, int column) {
