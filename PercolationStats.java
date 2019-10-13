@@ -12,7 +12,14 @@ public class PercolationStats {
     private final int percolationGridN;
     private final int percolationTrials;
     private double[] percolationThreshold;
-    private final double confidence95 = 1.96;
+    private final double confidence95;
+    private final double trialsSqrt;
+
+    // Stash stats. Only compute them once
+    private double mcMean;
+    private double mcStdDev;
+    private double mcLoCon;
+    private double mcHiCon;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -21,30 +28,32 @@ public class PercolationStats {
         this.percolationTrials = trials;
         this.percolationThreshold = new double[trials];
 
+        // Nessesary constants
+        this.confidence95 = 1.96;
+        this.trialsSqrt = Math.sqrt(trials);
+
         // Do the simulations.
         this.monteCarloSimulation();
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        return StdStats.mean(this.percolationThreshold);
+        return this.mcMean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return StdStats.stddev(this.percolationThreshold);
+        return this.mcStdDev;
     }
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return (this.mean() - ((this.confidence95 * this.stddev()) / Math
-                .sqrt(this.percolationTrials)));
+        return this.mcLoCon;
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return (this.mean() + ((this.confidence95 * this.stddev()) / Math
-                .sqrt(this.percolationTrials)));
+        return this.mcHiCon;
     }
 
     // test client (see below)
@@ -86,5 +95,10 @@ public class PercolationStats {
             this.percolationThreshold[trial] = perc.numberOfOpenSites() / Math
                     .pow(this.percolationGridN, 2);
         }
+        // Calculate stats one time here
+        this.mcMean = StdStats.mean(this.percolationThreshold);
+        this.mcStdDev = StdStats.stddev(this.percolationThreshold);
+        this.mcLoCon = (this.mcMean - ((this.confidence95 * this.mcStdDev) / this.trialsSqrt));
+        this.mcHiCon = (this.mcMean + ((this.confidence95 * this.mcStdDev) / this.trialsSqrt));
     }
 }
