@@ -9,30 +9,30 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private int gridN;
-    private int[][] percolationGrid; // Set element to 1 if open. Zero if closed.
+    private final int gridN;
+    private boolean[][] percolationGrid; // Set element to 1 if open. Zero if closed.
     private int numOfOpenSites;
-    private WeightedQuickUnionUF unionFind;
-    private int topVirtualIdx;
-    private int bottomVirtalInx;
+    private final WeightedQuickUnionUF unionFind;
+    private final int topVirtualIdx;
+    private final int bottomVirtalInx;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
         this.gridN = n;
-        this.percolationGrid = new int[n][n]; // By default all elements are initialized to zero
+        this.percolationGrid = new boolean[n][n]; // By default all elements are initialized to zero
         this.numOfOpenSites = 0;
 
         // Initialize Union find data structure
         this.unionFind = new WeightedQuickUnionUF((n * n) + 2); // Plus top and bottom virtual
-        this.topVirtualIdx = this.unionFind.count() - 2;
-        this.bottomVirtalInx = this.unionFind.count() - 1;
+        this.topVirtualIdx = (n * n);
+        this.bottomVirtalInx = (n * n) + 1;
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         checkRowAndCol(row, col);
-        if (this.percolationGrid[row - 1][col - 1] == 0) {
-            this.percolationGrid[row - 1][col - 1] = 1; // Maybe make a data structure for index.
+        if (!this.percolationGrid[row - 1][col - 1]) {
+            this.percolationGrid[row - 1][col - 1] = true; // Maybe make a data structure for index.
             this.numOfOpenSites++;
 
             // Need to make connections if neighboring members are open.
@@ -44,7 +44,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
         checkRowAndCol(row, col);
         // Return whether element in grid is open (equals 1)
-        return (this.percolationGrid[row - 1][col - 1] == 1);
+        return this.percolationGrid[row - 1][col - 1];
     }
 
     // is the site (row, col) full?
