@@ -42,6 +42,7 @@ public class Percolation {
 
             // Need to make connections if neighboring members are open.
             // connect w/ open neighbors func()
+            this.connectWithOpenNeighbors(row, col);
         }
     }
 
@@ -91,5 +92,42 @@ public class Percolation {
 
     private int gridToUnionFindIndex(int row, int column) {
         return (this.gridN * (row - 1) + (column - 1));
+    }
+
+    private void connectWithOpenNeighbors(int row, int column) {
+        int leftColumn = column - 1;
+        int rightColumn = column + 1;
+        int topRow = row - 1;
+        int bottomRow = row + 1;
+        // Check to make sure that you are not on left edge
+        if (column != 1 && this.isOpen(row, leftColumn)) {
+            this.unionFind.union(this.gridToUnionFindIndex(row, column),
+                                 this.gridToUnionFindIndex(row, leftColumn));
+        }
+        // Check to make sure that you are not on right edge
+        if (column != this.gridN && this.isOpen(row, rightColumn)) {
+            this.unionFind.union(this.gridToUnionFindIndex(row, column),
+                                 this.gridToUnionFindIndex(row, rightColumn));
+        }
+        // Connect with top virtual node if in top row.
+        if (row == 1) {
+            this.unionFind.union(this.topVirtualIdx, this.gridToUnionFindIndex(row, column));
+        }
+        else {
+            if (this.isOpen(topRow, column)) {
+                this.unionFind.union(this.gridToUnionFindIndex(row, column),
+                                     this.gridToUnionFindIndex(topRow, column));
+            }
+        }
+        // Connect with bottom virtual node if on bottom row.
+        if (row == this.gridN) {
+            this.unionFind.union(this.bottomVirtalInx, this.gridToUnionFindIndex(row, column));
+        }
+        else {
+            if (this.isOpen(bottomRow, column)) {
+                this.unionFind.union(this.gridToUnionFindIndex(row, column),
+                                     this.gridToUnionFindIndex(bottomRow, column));
+            }
+        }
     }
 }
