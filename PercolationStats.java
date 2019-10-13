@@ -8,6 +8,7 @@ public class PercolationStats {
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
+        this.validateTrialsAndN(n, trials);
     }
 
     // sample mean of percolation threshold
@@ -34,4 +35,12 @@ public class PercolationStats {
     public static void main(String[] args) {
     }
 
+    private void validateTrialsAndN(int n, int trials) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("Value " + n + "for n is not <= 0.");
+        }
+        if (trials <= 0) {
+            throw new IllegalArgumentException("Value " + trials + "for trials is not <= 0.");
+        }
+    }
 }
