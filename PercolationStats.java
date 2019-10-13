@@ -5,39 +5,42 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
+    private int percolationTrials;
     private double[] percolationThreshold;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         this.validateTrialsAndN(n, trials);
+        this.percolationTrials = trials;
         this.percolationThreshold = new double[trials];
 
         // Start the test loop.
         for (int trial = 0; trial < trials; trial++) {
-            percolationThreshold[i] = 0.0;
+            percolationThreshold[trial] = 0.0;
         }
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        return 0.0;
+        return StdStats.mean(this.percolationThreshold);
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return 0.0;
+        return StdStats.stddev(this.percolationThreshold);
     }
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return 0.0;
+        return (this.mean() - ((1.96 * this.stddev()) / Math.sqrt(this.percolationTrials)));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return 0.0;
+        return (this.mean() + ((1.96 * this.stddev()) / Math.sqrt(this.percolationTrials)));
     }
 
     // test client (see below)
