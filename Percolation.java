@@ -72,8 +72,9 @@ public class Percolation {
         // WeightedQuickUnionUF WQUUF = new WeightedQuickUnionUF(4);
         StdOut.println("Hello, World!");
         // StdOut.println("Is 1 and 3 connected: %d", WQUUF.connected(1, 3));
-        Percolation per = new Percolation(3);
-        per.open(3, 2);
+        Percolation per = new Percolation(5);
+        per.open(2, 2);
+        per.open(2, 3);
     }
 
     private void checkRowAndCol(int row, int column) {
