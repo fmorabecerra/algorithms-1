@@ -23,9 +23,9 @@ public class Percolation {
         this.numOfOpenSites = 0;
 
         // Initialize Union find data structure
-        this.unionFind = new WeightedQuickUnionUF(n + 2); // Plus top and bottom virtual
-        this.topVirtualIdx = n;
-        this.bottomVirtalInx = n + 1;
+        this.unionFind = new WeightedQuickUnionUF((n * n) + 2); // Plus top and bottom virtual
+        this.topVirtualIdx = this.unionFind.count() - 2;
+        this.bottomVirtalInx = this.unionFind.count() - 1;
         // Connect top virtual node to top row and also with the bottom
         for (int i = 1; i <= this.gridN; i++) {
             this.unionFind.union(topVirtualIdx, this.gridToUnionFindIndex(1, i));
