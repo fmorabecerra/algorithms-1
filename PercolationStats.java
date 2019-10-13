@@ -5,22 +5,23 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
+    private int percolationGridN;
     private int percolationTrials;
     private double[] percolationThreshold;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         this.validateTrialsAndN(n, trials);
+        this.percolationGridN = n;
         this.percolationTrials = trials;
         this.percolationThreshold = new double[trials];
 
-        // Start the test loop.
-        for (int trial = 0; trial < trials; trial++) {
-            percolationThreshold[trial] = 0.0;
-        }
+        // Do the simulations.
+        this.monteCarloSimulation();
     }
 
     // sample mean of percolation threshold
@@ -49,9 +50,13 @@ public class PercolationStats {
             PercolationStats percStats = new PercolationStats(Integer.parseInt(args[0]),
                                                               Integer.parseInt(args[1]));
             // Print mean
-            StdOut.println(percStats.mean());
+            StdOut.println("mean                    = " + percStats.mean());
             // Print stdDev
+            StdOut.println("stddev                  = " + percStats.stddev());
             // Print confidence interval.
+            StdOut.println(
+                    "95% confidence interval = [" + percStats.confidenceLo() + " " + percStats
+                            .confidenceHi() + "]");
         }
     }
 
@@ -61,6 +66,22 @@ public class PercolationStats {
         }
         if (trials <= 0) {
             throw new IllegalArgumentException("Value " + trials + "for trials is not <= 0.");
+        }
+    }
+
+    private void monteCarloSimulation() {
+        // Start each trial
+        for (int trial = 0; trial < this.percolationTrials; trial++) {
+            Percolation perc = new Percolation(this.percolationGridN);
+            while (!perc.percolates()) {
+                // Generate random site to open.
+                int row = StdRandom.uniform(this.percolationGridN) + 1;
+                int col = StdRandom.uniform(this.percolationGridN) + 1;
+
+                perc.open(row, col);
+            }
+            this.percolationThreshold[trial] = perc.numberOfOpenSites() / Math
+                    .pow(this.percolationGridN, 2);
         }
     }
 }
