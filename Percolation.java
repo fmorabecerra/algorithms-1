@@ -36,7 +36,6 @@ public class Percolation {
             this.numOfOpenSites++;
 
             // Need to make connections if neighboring members are open.
-            // connect w/ open neighbors func()
             this.connectWithOpenNeighbors(row, col);
         }
     }
