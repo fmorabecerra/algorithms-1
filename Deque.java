@@ -8,6 +8,7 @@
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
     // public class Deque<Item> {
@@ -34,6 +35,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the front
     public void addFirst(Item item) {
+        if (item == null) throw new IllegalArgumentException("null");
         Node oldfirst = this.first;
         this.first = new Node();
         this.first.item = item;
@@ -51,6 +53,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the back
     public void addLast(Item item) {
+        if (item == null) throw new IllegalArgumentException("null");
         Node oldLast = this.last;
         this.last = new Node();
         this.last.item = item;
@@ -69,7 +72,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the front
     public Item removeFirst() { // Pop
-        if (isEmpty()) return null;
+        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
         Node oldFirst = this.first;
         this.first = this.first.next;
         this.totalNodes--;
@@ -85,6 +88,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the back
     public Item removeLast() {
+        if (isEmpty()) throw new NoSuchElementException("Deque is empty");
         Node oldLast = this.last;
         // Have to come up with a method to set 2nd to last Node to last
         return oldLast.item;
@@ -114,9 +118,9 @@ public class Deque<Item> implements Iterable<Item> {
     // Private API stuff
 
     private class Node {
-        private Item item;
-        private Node next;
-        private Node previous;
+        Item item;
+        Node next;
+        Node previous;
     }
 
     private class DequeIterator implements Iterator<Item> {
