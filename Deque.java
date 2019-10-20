@@ -13,11 +13,13 @@ public class Deque<Item> implements Iterable<Item> {
     // public class Deque<Item> {
     private Node first;
     private Node last;
+    private int totalNodes;
 
     // construct an empty deque
     public Deque() {
         this.first = null;
         this.last = null;
+        this.totalNodes = 0;
     }
 
     // is the deque empty?
@@ -27,7 +29,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return the number of items on the deque
     public int size() {
-        return 0;
+        return this.totalNodes;
     }
 
     // add the item to the front
