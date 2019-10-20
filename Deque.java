@@ -108,10 +108,4 @@ public class Deque<Item> implements Iterable<Item> {
             return item;
         }
     }
-
-    private static void printObjectSize(Object object) {
-        System.out.println("Object type: " + object.getClass() +
-                                   ", size: " + InstrumentationAgent.getObjectSize(object)
-                                   + " bytes");
-    }
 }
