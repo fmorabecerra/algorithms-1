@@ -76,21 +76,19 @@ public class Deque<Item> implements Iterable<Item> {
         Node oldFirst = this.first;
         this.first = this.first.next;
         this.totalNodes--;
-        if (isEmpty()) {
-            this.last = this.first;
-            return oldFirst.item;
-        }
-        else {
-            this.first.previous = null;
-            return oldFirst.item;
-        }
+        if (isEmpty()) this.last = this.first;
+        else this.first.previous = null;
+        return oldFirst.item;
     }
 
     // remove and return the item from the back
     public Item removeLast() {
         if (isEmpty()) throw new NoSuchElementException("Deque is empty");
         Node oldLast = this.last;
-        // Have to come up with a method to set 2nd to last Node to last
+        this.last = oldLast.previous;
+        if (this.last == null) this.first = this.last;
+        else this.last.next = null;
+        this.totalNodes--;
         return oldLast.item;
     }
 
@@ -106,13 +104,15 @@ public class Deque<Item> implements Iterable<Item> {
         // Start Deque
         Deque<String> deque = new Deque<String>();
         StdOut.println("Adding: Hello");
-        deque.addFirst("Hello");
+        deque.addLast("Hello");
         StdOut.println("Adding: Hola");
-        deque.addFirst("Hola");
-        // deque.addFirst("Bonjour");
-        StdOut.println("Item removed from stack: " + deque.removeFirst());
-        StdOut.println("Item removed from stack: " + deque.removeFirst());
-        StdOut.println("Item removed from stack: " + deque.removeFirst());
+        deque.addLast("Hola");
+        StdOut.println("Adding: Bonjour");
+        deque.addLast("Bonjour");
+        StdOut.println("Item removed from stack: " + deque.removeLast());
+        StdOut.println("Item removed from stack: " + deque.removeLast());
+        StdOut.println("Item removed from stack: " + deque.removeLast());
+        StdOut.println("Item removed from stack: " + deque.removeLast());
     }
 
     // Private API stuff
