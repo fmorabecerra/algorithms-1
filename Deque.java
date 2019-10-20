@@ -38,6 +38,15 @@ public class Deque<Item> implements Iterable<Item> {
         this.first = new Node();
         this.first.item = item;
         this.first.next = oldfirst;
+        this.first.previous = null;
+        this.totalNodes++; // Increment
+
+        if (this.last == null) {
+            this.last = this.first;
+        }
+        else {
+            oldfirst.previous = this.first;
+        }
     }
 
     // add the item to the back
@@ -46,16 +55,32 @@ public class Deque<Item> implements Iterable<Item> {
         this.last = new Node();
         this.last.item = item;
         this.last.next = null;
+        this.totalNodes++;
 
-        if (isEmpty()) first = last;
-        else oldLast.next = last;
+        if (isEmpty()) {
+            this.first = this.last;
+            this.last.previous = null;
+        }
+        else {
+            oldLast.next = this.last;
+            this.last.previous = oldLast;
+        }
     }
 
     // remove and return the item from the front
     public Item removeFirst() { // Pop
-        Item item = this.first.item;
+        if (isEmpty()) return null;
+        Node oldFirst = this.first;
         this.first = this.first.next;
-        return item;
+        this.totalNodes--;
+        if (isEmpty()) {
+            this.last = this.first;
+            return oldFirst.item;
+        }
+        else {
+            this.first.previous = null;
+            return oldFirst.item;
+        }
     }
 
     // remove and return the item from the back
