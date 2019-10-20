@@ -72,17 +72,18 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        // Lets try to find out size of this.
-        Deque<String> deque = new Deque<String>();
-        deque.addFirst("Hello");
-
         StdOut.println("Hello World");
 
-        // Checkout the size
-        // The size stuff is not helping because it does not include each stack node size.
-        printObjectSize(deque);
+        // Start Deque
+        Deque<String> deque = new Deque<String>();
+        StdOut.println("Adding: Hello");
+        deque.addFirst("Hello");
+        StdOut.println("Adding: Hola");
         deque.addFirst("Hola");
-        printObjectSize(deque);
+        // deque.addFirst("Bonjour");
+        StdOut.println("Item removed from stack: " + deque.removeFirst());
+        StdOut.println("Item removed from stack: " + deque.removeFirst());
+        StdOut.println("Item removed from stack: " + deque.removeFirst());
     }
 
     // Private API stuff
