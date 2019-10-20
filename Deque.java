@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
-    // public class Deque<Item> {
     private Node first;
     private Node last;
     private int totalNodes;
@@ -43,12 +42,10 @@ public class Deque<Item> implements Iterable<Item> {
         this.first.previous = null;
         this.totalNodes++; // Increment
 
-        if (this.last == null) {
+        if (this.last == null)
             this.last = this.first;
-        }
-        else {
+        else
             oldfirst.previous = this.first;
-        }
     }
 
     // add the item to the back
@@ -109,10 +106,17 @@ public class Deque<Item> implements Iterable<Item> {
         deque.addLast("Hola");
         StdOut.println("Adding: Bonjour");
         deque.addLast("Bonjour");
+        StdOut.println("Size of deque: " + deque.size());
+
+        for (String s : deque)
+            StdOut.println(s);
+
         StdOut.println("Item removed from stack: " + deque.removeLast());
         StdOut.println("Item removed from stack: " + deque.removeLast());
         StdOut.println("Item removed from stack: " + deque.removeLast());
-        StdOut.println("Item removed from stack: " + deque.removeLast());
+        StdOut.println("Size of deque: " + deque.size());
+        if (!deque.isEmpty())
+            StdOut.println("Item removed from stack: " + deque.removeLast());
     }
 
     // Private API stuff
@@ -130,9 +134,12 @@ public class Deque<Item> implements Iterable<Item> {
             return current != null;
         }
 
-        public void remove() {  /* not supported */ }
+        public void remove() {
+            throw new UnsupportedOperationException("Remove func not supported.");
+        }
 
         public Item next() {
+            if (current == null) throw new NoSuchElementException("End of list. No more Items.");
             Item item = current.item;
             current = current.next;
             return item;
