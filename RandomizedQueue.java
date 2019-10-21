@@ -33,8 +33,9 @@ public class RandomizedQueue<Item> {
     // add the item
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException("Cannot enqueue null");
-        checkArraySize();
+        this.checkArraySize();
         this.stackArray[arrayN++] = item;
+        this.randomSwap();  // Comment to remove randomness
     }
 
     // remove and return a random item
@@ -84,6 +85,14 @@ public class RandomizedQueue<Item> {
 
 
     // !!!! All Private Methods Below !!!!
+    // Swap latest item with another item.
+    private void randomSwap() {
+        int randomIndex = StdRandom.uniform(this.arrayN);
+        int lastIndex = this.arrayN - 1;
+        Item oldLastItem = this.stackArray[lastIndex];
+        this.stackArray[lastIndex] = this.stackArray[randomIndex];
+        this.stackArray[randomIndex] = oldLastItem;
+    }
 
     // private class ReverseArrayIterator implements Iterator<Item> {
     //     private int i = totalItems();
