@@ -7,10 +7,10 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-// public class RandomizedQueue<Item> implements Iterable<Item> {
-public class RandomizedQueue<Item> {
+public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] stackArray;
     private int arrayN;
 
@@ -54,10 +54,10 @@ public class RandomizedQueue<Item> {
         return this.stackArray[StdRandom.uniform(this.arrayN)];
     }
 
-    // // return an independent iterator over items in random order
-    // public Iterator<Item> iterator() {
-    //     return new ReverseArrayIterator();
-    // }
+    // return an independent iterator over items in random order
+    public Iterator<Item> iterator() {
+        return new ReverseArrayIterator();
+    }
 
     // unit testing (required)
     public static void main(String[] args) {
@@ -71,6 +71,9 @@ public class RandomizedQueue<Item> {
         randQueue.enqueue("Third");
         randQueue.enqueue("Fourth");
         randQueue.enqueue("Fifth");
+
+        for (String s : randQueue)
+            StdOut.println("Iterator: " + s);
         // Return random samples
         // for (int i = 0; i < 20; i++) {
         //     StdOut.println("Random Item: " + randQueue.sample());
@@ -94,19 +97,23 @@ public class RandomizedQueue<Item> {
         this.stackArray[randomIndex] = oldLastItem;
     }
 
-    // private class ReverseArrayIterator implements Iterator<Item> {
-    //     private int i = totalItems();
-    //
-    //     public boolean hasNext() {
-    //         return i > 0;
-    //     }
-    //
-    //     public void remove() {  /* not supported */ }
-    //
-    //     public Item next() {
-    //         // return s[--i];
-    //     }
-    // }
+    private class ReverseArrayIterator implements Iterator<Item> {
+        private int i = size();
+
+        public boolean hasNext() {
+            return i > 0;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported");
+        }
+
+        public Item next() {
+            StdOut.println("Itorator next i: " + i);
+            if (i == 0) throw new NoSuchElementException("Iterator: no more items left.");
+            return stackArray[--i];
+        }
+    }
 
     // Check array size. Halve if using < 25%. Double if @ 100%
     private void checkArraySize() {
