@@ -11,53 +11,46 @@ import java.util.NoSuchElementException;
 
 // public class RandomizedQueue<Item> implements Iterable<Item> {
 public class RandomizedQueue<Item> {
-    private Item[] queueArray;
-    private int startN;
-    private int endN;
+    private Item[] stackArray;
+    private int arrayN;
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        this.queueArray = (Item[]) new Object[3];
-        this.startN = 0;
-        this.endN = 0;
+        this.stackArray = (Item[]) new Object[3];
+        this.arrayN = 0;
     }
 
     // is the randomized queue empty?
     public boolean isEmpty() {
-        return (this.endN == this.startN);
+        return (this.arrayN == 0);
     }
 
     // return the number of items on the randomized queue
     public int size() {
-        return this.endN - this.startN;
+        return this.arrayN;
     }
 
     // add the item
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException("Cannot enqueue null");
         // First we need to shift to left and then double in size if needed.
-        if (this.endN == this.queueArray.length) resize(2 * this.queueArray.length);
-        this.queueArray[endN++] = item;
+        if (this.arrayN == this.stackArray.length) resize(2 * this.stackArray.length);
+        this.stackArray[arrayN++] = item;
     }
 
     // remove and return a random item
     public Item dequeue() { // like deque will return item at begin
         if (isEmpty()) throw new NoSuchElementException("queue is empty");
-        Item oldFirst = this.queueArray[this.startN];
-        this.queueArray[this.startN] = null;  // Remove in future. Unessesary step right now.
-        this.startN++;
-        // If start catches up to end then reset both to zero index.
-        if (this.startN == this.endN) {
-            this.startN = 0;
-            this.endN = 0;
-        }
-        return oldFirst;
+        this.arrayN--;
+        Item oldLast = this.stackArray[this.arrayN];
+        this.stackArray[this.arrayN] = null;  // Not needed in future. Can ignore.
+        return oldLast;
     }
 
     // return a random item (but do not remove it)
     public Item sample() {
         if (isEmpty()) throw new NoSuchElementException("queue is empty");
-        return this.queueArray[StdRandom.uniform(this.startN, this.endN)];
+        return this.stackArray[StdRandom.uniform(this.arrayN)];
     }
 
     // // return an independent iterator over items in random order
@@ -84,9 +77,8 @@ public class RandomizedQueue<Item> {
         // Start dequeing
         StdOut.println("Removing: " + randQueue.dequeue());
         StdOut.println("Removing: " + randQueue.dequeue());
-        // StdOut.println("Removing: " + randQueue.dequeue());
-        // StdOut.println("Removing: " + randQueue.dequeue());
-        randQueue.shiftAllToTheStart();
+        StdOut.println("Removing: " + randQueue.dequeue());
+        StdOut.println("Removing: " + randQueue.dequeue());
         StdOut.println("Removing: " + randQueue.dequeue());
     }
 
@@ -107,19 +99,10 @@ public class RandomizedQueue<Item> {
     //     }
     // }
 
-    private void shiftAllToTheStart() {
-        for (int i = this.startN; i < this.endN; i++) {
-            this.queueArray[i - this.startN] = this.queueArray[i];
-        }
-        this.endN -= this.startN;
-        this.startN = 0;
-    }
-
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
-        for (int i = this.startN; i < this.endN; i++)
-            copy[i] = this.queueArray[i];
-        this.queueArray = copy;
+        for (int i = 0; i < this.arrayN; i++)
+            copy[i] = this.stackArray[i];
+        this.stackArray = copy;
     }
-
 }
