@@ -98,10 +98,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class ReverseArrayIterator implements Iterator<Item> {
-        private int i = size();
+        private int iteratorI = size();
 
         public boolean hasNext() {
-            return i > 0;
+            return iteratorI > 0;
         }
 
         public void remove() {
@@ -109,9 +109,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         public Item next() {
-            StdOut.println("Itorator next i: " + i);
-            if (i == 0) throw new NoSuchElementException("Iterator: no more items left.");
-            return stackArray[--i];
+            if (iteratorI == 0) throw new NoSuchElementException("Iterator: no more items left.");
+            return stackArray[--iteratorI];
         }
     }
 
