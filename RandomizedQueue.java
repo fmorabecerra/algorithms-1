@@ -76,14 +76,17 @@ public class RandomizedQueue<Item> {
         randQueue.enqueue("Second");
         randQueue.enqueue("Third");
         randQueue.enqueue("Fourth");
+        randQueue.enqueue("Fifth");
         // Return random samples
-        for (int i = 0; i < 20; i++) {
-            StdOut.println("Random Item: " + randQueue.sample());
-        }
+        // for (int i = 0; i < 20; i++) {
+        //     StdOut.println("Random Item: " + randQueue.sample());
+        // }
         // Start dequeing
         StdOut.println("Removing: " + randQueue.dequeue());
         StdOut.println("Removing: " + randQueue.dequeue());
-        StdOut.println("Removing: " + randQueue.dequeue());
+        // StdOut.println("Removing: " + randQueue.dequeue());
+        // StdOut.println("Removing: " + randQueue.dequeue());
+        randQueue.shiftAllToTheStart();
         StdOut.println("Removing: " + randQueue.dequeue());
     }
 
