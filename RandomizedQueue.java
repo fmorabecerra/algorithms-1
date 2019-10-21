@@ -16,7 +16,7 @@ public class RandomizedQueue<Item> {
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        this.stackArray = (Item[]) new Object[3];
+        this.stackArray = (Item[]) new Object[4];
         this.arrayN = 0;
     }
 
@@ -33,8 +33,7 @@ public class RandomizedQueue<Item> {
     // add the item
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException("Cannot enqueue null");
-        // First we need to shift to left and then double in size if needed.
-        if (this.arrayN == this.stackArray.length) resize(2 * this.stackArray.length);
+        checkArraySize();
         this.stackArray[arrayN++] = item;
     }
 
@@ -44,6 +43,7 @@ public class RandomizedQueue<Item> {
         this.arrayN--;
         Item oldLast = this.stackArray[this.arrayN];
         this.stackArray[this.arrayN] = null;  // Not needed in future. Can ignore.
+        this.checkArraySize(); // Check to see if you have to make smaller.
         return oldLast;
     }
 
@@ -98,6 +98,12 @@ public class RandomizedQueue<Item> {
     //         // return s[--i];
     //     }
     // }
+
+    // Check array size. Halve if using < 25%. Double if @ 100%
+    private void checkArraySize() {
+        if (this.arrayN == this.stackArray.length) resize(2 * this.stackArray.length);
+        if (this.arrayN <= (this.stackArray.length / 4)) this.resize(this.stackArray.length / 2);
+    }
 
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
