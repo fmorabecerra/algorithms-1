@@ -67,6 +67,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         RandomizedQueue<String> randQueue = new RandomizedQueue<String>();
         StdOut.println("the size of my queue is: " + randQueue.size());
         randQueue.enqueue("First");
+        randQueue.dequeue();
         randQueue.enqueue("Second");
         randQueue.enqueue("Third");
         randQueue.enqueue("Fourth");
@@ -99,7 +100,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class ReverseArrayIterator implements Iterator<Item> {
         private int iteratorI = size();
-        private Item[] iteratorArray;
+        private final Item[] iteratorArray;
 
         ReverseArrayIterator() {
             iteratorArray = (Item[]) new Object[size()];
@@ -128,7 +129,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // Check array size. Halve if using < 25%. Double if @ 100%
     private void checkArraySize() {
         if (this.arrayN == this.stackArray.length) resize(2 * this.stackArray.length);
-        if (this.arrayN <= (this.stackArray.length / 4)) this.resize(this.stackArray.length / 2);
+        if (!(this.isEmpty()) && (this.arrayN <= (this.stackArray.length / 4)))
+            this.resize(this.stackArray.length / 2);
     }
 
     private void resize(int capacity) {
