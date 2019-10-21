@@ -35,7 +35,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (item == null) throw new IllegalArgumentException("Cannot enqueue null");
         this.checkArraySize();
         this.stackArray[arrayN++] = item;
-        this.randomSwap();  // Comment to remove randomness
+        // this.randomSwap();  // Comment to remove randomness
     }
 
     // remove and return a random item
@@ -99,6 +99,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class ReverseArrayIterator implements Iterator<Item> {
         private int iteratorI = size();
+        private Item[] iteratorArray;
+
+        ReverseArrayIterator() {
+            iteratorArray = (Item[]) new Object[size()];
+            // Fill in iterator array randomnly
+            for (int j = 0; j < size(); j++) {
+                int randomIndex = StdRandom.uniform(j + 1);
+                iteratorArray[j] = iteratorArray[randomIndex];
+                iteratorArray[randomIndex] = stackArray[j];
+            }
+        }
 
         public boolean hasNext() {
             return iteratorI > 0;
@@ -110,7 +121,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public Item next() {
             if (iteratorI == 0) throw new NoSuchElementException("Iterator: no more items left.");
-            return stackArray[--iteratorI];
+            return iteratorArray[--iteratorI];
         }
     }
 
