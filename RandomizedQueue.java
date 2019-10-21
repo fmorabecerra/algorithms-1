@@ -35,7 +35,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (item == null) throw new IllegalArgumentException("Cannot enqueue null");
         this.checkArraySize();
         this.stackArray[arrayN++] = item;
-        // this.randomSwap();  // Comment to remove randomness
+        this.randomSwap();  // Comment to remove randomness
     }
 
     // remove and return a random item
