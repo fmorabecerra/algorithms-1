@@ -105,7 +105,11 @@ public class RandomizedQueue<Item> {
     // }
 
     private void shiftAllToTheStart() {
-        // shift all entries in array to right.
+        for (int i = this.startN; i < this.endN; i++) {
+            this.queueArray[i - this.startN] = this.queueArray[i];
+        }
+        this.endN -= this.startN;
+        this.startN = 0;
     }
 
     private void resize(int capacity) {
