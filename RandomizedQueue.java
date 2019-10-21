@@ -29,7 +29,7 @@ public class RandomizedQueue<Item> {
 
     // return the number of items on the randomized queue
     public int size() {
-        return this.endN - this.startN + 1;
+        return this.endN - this.startN;
     }
 
     // add the item
