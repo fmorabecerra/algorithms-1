@@ -8,6 +8,9 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class BruteCollinearPoints {
     private int totalSegments;
     private LineSegment[] validLineSegments;
@@ -15,6 +18,8 @@ public class BruteCollinearPoints {
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         validatePoints(points);
+        ArrayList<LineSegment> lineSegmentsArrayList = new ArrayList<LineSegment>(0);
+        Point[] fourPoints = new Point[4];
 
         // Need to throw exception here if point are equal
         for (int p = 0; p < points.length; p++) {
@@ -34,10 +39,24 @@ public class BruteCollinearPoints {
                         // Check if points are collinear
                         if (slopePtoQ == slopePtoR || slopePtoQ == slopePtoS) {
                             this.totalSegments++;
+                            // Now we have to store the line segments
+                            fourPoints[0] = points[p];
+                            fourPoints[1] = points[q];
+                            fourPoints[2] = points[r];
+                            fourPoints[3] = points[s];
+                            Arrays.sort(fourPoints);
+                            LineSegment seg = new LineSegment(fourPoints[0], fourPoints[3]);
+                            lineSegmentsArrayList.add(seg);
                         }
                     }
                 }
             }
+        }
+
+        this.validLineSegments = new LineSegment[this.totalSegments];
+        // Convert the line segments Array list to array.
+        for (int i = 0; i < this.totalSegments; i++) {
+            this.validLineSegments[i] = lineSegmentsArrayList.get(i);
         }
     }
 
@@ -91,11 +110,5 @@ public class BruteCollinearPoints {
             if (points[i] == null) throw new IllegalArgumentException("Element " + i + "is null");
         }
     }
-
-    // To check whether the 4 points p, q, r, and s are collinear, check whether
-    // the three slopes between p and q, between p and r, and between p and s are all equal.
-    // private boolean areTheseFourPointsCollinear(Point p, Point q, Point r, Point s) {
-    //     // something
-    // }
 }
 
