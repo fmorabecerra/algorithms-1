@@ -10,6 +10,8 @@
 
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.util.Comparator;
+
 public class Point implements Comparable<Point> {
 
     private final int x;     // x-coordinate of this point
@@ -57,7 +59,14 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        return 0.0;
+        if (that.x == this.x && that.y == this.y)  // Points are Identical
+            return Double.NEGATIVE_INFINITY;
+        if (that.x - this.x == 0)  // Line is vertical
+            return Double.POSITIVE_INFINITY;
+        if (that.y == this.y)  // Line is horizontal
+            return +0.0;
+
+        return (double) (that.y - this.y) / (that.x - this.x);
     }
 
     /**
@@ -72,7 +81,15 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
-        return 0;
+        if (this.y > that.y || (this.y == that.y && this.x > that.x)) {
+            return 1; // if this point is More than THAT
+        }
+        else if (this.y < that.y || this.x < that.x) {
+            return -1; // if this point is less than THAT
+        }
+        else {
+            return 0;  // points are equal.
+        }
     }
 
     /**
@@ -81,9 +98,10 @@ public class Point implements Comparable<Point> {
      *
      * @return the Comparator that defines this ordering on points
      */
-    // public Comparator<Point> slopeOrder() {
-    //     /* YOUR CODE HERE */
-    // }
+    public Comparator<Point> slopeOrder() {
+        /* YOUR CODE HERE */
+        return (new PolarOrder());
+    }
 
 
     /**
@@ -102,5 +120,34 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+    }
+
+
+    // My private Methods:
+
+    // The slopeOrder() method should return a comparator that compares its
+    // two argument points by the slopes they make with the invoking point (x0, y0).
+    // Formally, the point (x1, y1) is less than the point (x2, y2) if and only if
+    // the slope (y1 − y0) / (x1 − x0) is less than the slope (y2 − y0) / (x2 − x0).
+    // Treat horizontal, vertical, and degenerate line segments as in the slopeTo() method.
+    private class PolarOrder implements Comparator<Point> {
+        public int compare(Point p1, Point p2) {
+            double dy1 = p1.y - Point.this.y;
+            double dy2 = p2.y - Point.this.y;
+            if (dy1 == 0 && dy2 == 0) return +0;  // p, q1, q2 horizontal
+            else if (dy1 >= 0 && dy2 < 0) return -1; // p1 above p; p2 below p
+            else if (dy2 >= 0 && dy1 < 0) return +1;  // p1 below p; p2 above p
+            else return -ccw(Point.this, p1, p2);  // both above or below p
+        }
+    }
+
+    // Slide 77 from week 2 part 2.
+    // Given three points a, b, and c, is a → b→ c a counterclockwise turn?
+    //  ・Determinant (or cross product) gives 2x signed area of planar triangle.
+    private static int ccw(Point a, Point b, Point c) {
+        double area2 = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+        if (area2 < 0) return -1; // clockwise
+        else if (area2 > 0) return +1; // counter-clockwise
+        else return 0; // collinear
     }
 }
