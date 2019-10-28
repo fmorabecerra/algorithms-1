@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class BruteCollinearPoints {
     private int totalSegments;
-    private LineSegment[] validLineSegments;
+    private final LineSegment[] validLineSegments;
 
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
@@ -37,7 +37,8 @@ public class BruteCollinearPoints {
                                 || slopePtoS == Double.NEGATIVE_INFINITY)
                             throw new IllegalArgumentException("Identical poins found");
                         // Check if points are collinear
-                        if (slopePtoQ == slopePtoR || slopePtoQ == slopePtoS) {
+                        if (Double.compare(slopePtoQ, slopePtoR) == 0
+                                || Double.compare(slopePtoQ, slopePtoS) == 0) {
                             this.totalSegments++;
                             // Now we have to store the line segments
                             fourPoints[0] = points[p];
@@ -68,7 +69,7 @@ public class BruteCollinearPoints {
 
     // the line segments
     public LineSegment[] segments() {
-        return this.validLineSegments;
+        return Arrays.copyOf(this.validLineSegments, this.totalSegments);
     }
 
     public static void main(String[] args) {
