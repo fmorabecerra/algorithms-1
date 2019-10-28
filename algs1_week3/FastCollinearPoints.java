@@ -47,6 +47,9 @@ public class FastCollinearPoints {
                     // stash the max point
                     if (sortingArray[j].compareTo(sortingArray[maxPointIndex]) > 0)
                         maxPointIndex = j;
+                    if (j == points.length - 1)
+                        lineSegmentsArrayList
+                                .add(new LineSegment(points[i], sortingArray[maxPointIndex]));
                 }
                 else {  // Pattern is not found
                     if (state == 1) {
