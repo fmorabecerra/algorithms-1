@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Comparator;
 
@@ -120,6 +121,29 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+        StdOut.println("Hello, World!");
+        // Point p1 = new Point(1, 1);
+        // Point p2 = new Point(2, 1);
+        // p1.slopeTo(p2);
+
+        //   * sign of compare(), where p, q, and r have coordinates in [0, 10)
+        // Failed on trial 1 of 100000
+        // p                         = (5, 9)
+        // q                         = (8, 6)
+        // r                         = (1, 3)
+        // student   p.compare(q, r) = 1
+        // reference p.compare(q, r) = -1
+        // reference p.slopeTo(q)    = -1.0
+        // reference p.slopeTo(r)    = 1.5
+
+        // Point p = new Point(5, 9);
+        // Point q = new Point(8, 6);
+        // Point r = new Point(1, 3);
+
+        Point p = new Point(10354, 20973);
+        Point q = new Point(30825, 7371);
+        Point r = new Point(26210, 32375);
+        StdOut.println("My anwer: " + p.slopeOrder().compare(q, r));
     }
 
 
@@ -132,22 +156,7 @@ public class Point implements Comparable<Point> {
     // Treat horizontal, vertical, and degenerate line segments as in the slopeTo() method.
     private class PolarOrder implements Comparator<Point> {
         public int compare(Point p1, Point p2) {
-            double dy1 = p1.y - Point.this.y;
-            double dy2 = p2.y - Point.this.y;
-            if (dy1 == 0 && dy2 == 0) return +0;  // p, q1, q2 horizontal
-            else if (dy1 >= 0 && dy2 < 0) return -1; // p1 above p; p2 below p
-            else if (dy2 >= 0 && dy1 < 0) return +1;  // p1 below p; p2 above p
-            else return -ccw(Point.this, p1, p2);  // both above or below p
+            return Double.compare(Point.this.slopeTo(p1), Point.this.slopeTo(p2));
         }
-    }
-
-    // Slide 77 from week 2 part 2.
-    // Given three points a, b, and c, is a → b→ c a counterclockwise turn?
-    //  ・Determinant (or cross product) gives 2x signed area of planar triangle.
-    private static int ccw(Point a, Point b, Point c) {
-        double area2 = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-        if (area2 < 0) return -1; // clockwise
-        else if (area2 > 0) return +1; // counter-clockwise
-        else return 0; // collinear
     }
 }
