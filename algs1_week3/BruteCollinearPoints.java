@@ -35,7 +35,7 @@ public class BruteCollinearPoints {
                         if (slopePtoQ == Double.NEGATIVE_INFINITY
                                 || slopePtoR == Double.NEGATIVE_INFINITY
                                 || slopePtoS == Double.NEGATIVE_INFINITY)
-                            throw new IllegalArgumentException("Identical poins found");
+                            throw new IllegalArgumentException("Identical points found");
                         // Check if points are collinear
                         if (Double.compare(slopePtoQ, slopePtoR) == 0
                                 || Double.compare(slopePtoQ, slopePtoS) == 0) {
