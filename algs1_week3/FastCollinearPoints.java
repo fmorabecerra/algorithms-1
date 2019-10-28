@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FastCollinearPoints {
-    private int totalSegments;
+    private final int totalSegments;
     private final LineSegment[] validLineSegments;
 
     // finds all line segments containing 4 or more points
