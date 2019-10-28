@@ -74,22 +74,10 @@ public class FastCollinearPoints {
 
     // the line segments
     public LineSegment[] segments() {
-        return Arrays.copyOf(this.validLineSegments, 3);
+        return Arrays.copyOf(this.validLineSegments, this.totalSegments);
     }
 
     public static void main(String[] args) {
-
-        // Point[] mypts = new Point[4];
-        // mypts[0] = new Point(1, 0);
-        // mypts[1] = new Point(1, 1);
-        // mypts[2] = new Point(2, 2);
-        // mypts[3] = new Point(3, 3);
-
-        // FastCollinearPoints collinear = new FastCollinearPoints(mypts);
-        // for (LineSegment segment : collinear.segments()) {
-        //     StdOut.println(segment);
-        //     // segment.draw();
-        // }
 
         // read the n points from a file
         In in = new In(args[0]);
