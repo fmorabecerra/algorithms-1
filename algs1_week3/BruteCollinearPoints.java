@@ -24,19 +24,20 @@ public class BruteCollinearPoints {
         // Need to throw exception here if point are equal
         for (int p = 0; p < points.length; p++) {
             for (int q = p + 1; q < points.length; q++) {
+
+                // Check for duplicates here
+                if (points[p].compareTo(points[q]) == 0)
+                    throw new IllegalArgumentException("Identical points found");
+
                 for (int r = q + 1; r < points.length; r++) {
                     for (int s = r + 1; s < points.length; s++) {
-                        // To check whether the 4 points p, q, r, and s are collinear, check whether
-                        // the three slopes between p and q, between p and r, and between p and s are all equal.
+                        // Compute some slopes
                         double slopePtoQ = points[p].slopeTo(points[q]);
                         double slopePtoR = points[p].slopeTo(points[r]);
                         double slopePtoS = points[p].slopeTo(points[s]);
-                        // Check if we have multiple entries
-                        if (slopePtoQ == Double.NEGATIVE_INFINITY
-                                || slopePtoR == Double.NEGATIVE_INFINITY
-                                || slopePtoS == Double.NEGATIVE_INFINITY)
-                            throw new IllegalArgumentException("Identical points found");
-                        // Check if points are collinear
+
+                        // To check whether the 4 points p, q, r, and s are collinear, check whether
+                        // the three slopes between p and q, between p and r, and between p and s are all equal.
                         if (Double.compare(slopePtoQ, slopePtoR) == 0
                                 && Double.compare(slopePtoQ, slopePtoS) == 0) {
                             this.totalSegments++;
@@ -73,6 +74,19 @@ public class BruteCollinearPoints {
     }
 
     public static void main(String[] args) {
+
+        // Point[] mypts = new Point[5];
+        // mypts[0] = new Point(1, 0);
+        // mypts[1] = new Point(1, 1);
+        // mypts[2] = new Point(2, 2);
+        // mypts[3] = new Point(3, 3);
+        // mypts[4] = new Point(4, 4);
+        //
+        //
+        // BruteCollinearPoints collinear = new BruteCollinearPoints(mypts);
+        // for (LineSegment seg : collinear.validLineSegments) {
+        //     StdOut.println(seg.toString());
+        // }
 
         // read the n points from a file
         In in = new In(args[0]);
@@ -112,4 +126,3 @@ public class BruteCollinearPoints {
         }
     }
 }
-
