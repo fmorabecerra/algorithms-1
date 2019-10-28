@@ -38,7 +38,7 @@ public class BruteCollinearPoints {
                             throw new IllegalArgumentException("Identical points found");
                         // Check if points are collinear
                         if (Double.compare(slopePtoQ, slopePtoR) == 0
-                                || Double.compare(slopePtoQ, slopePtoS) == 0) {
+                                && Double.compare(slopePtoQ, slopePtoS) == 0) {
                             this.totalSegments++;
                             // Now we have to store the line segments
                             fourPoints[0] = points[p];
