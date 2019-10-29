@@ -150,6 +150,8 @@ public class Point implements Comparable<Point> {
         // Point p2 = new Point(2, 2);
         // Point p3 = new Point(3, 3);
         // StdOut.println("Are slopes equal: " + p0.slopeOrder().compare(p3, p2));
+        StdOut.println("Result of double compare: " + Double
+                .compare(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
 
 
     }
