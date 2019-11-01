@@ -12,13 +12,14 @@ import java.util.Arrays;
 public class Board {
     private int n;
     private int[][] currentBoard;
+    private int[][] goalBoard = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         this.n = tiles.length;  // This may not be correct. Might be total number of elements.
         // this.currentBoard = Arrays.copyOf(tiles, this.n);
-        this.currentBoard = tiles;
+        this.currentBoard = tiles.clone();
     }
 
     // string representation of this board
@@ -47,7 +48,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return true;
+        return (this.goalBoard == this.currentBoard);
     }
 
     // does this board equal y?
