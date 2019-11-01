@@ -48,7 +48,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return (this.goalBoard == this.currentBoard);
+        return Arrays.deepEquals(this.goalBoard, this.currentBoard);
     }
 
     // does this board equal y?
@@ -79,6 +79,7 @@ public class Board {
         Board initial = new Board(tiles);
 
         StdOut.println(initial.toString());
+        StdOut.println("Is goal?: " + initial.isGoal());
     }
 
 }
