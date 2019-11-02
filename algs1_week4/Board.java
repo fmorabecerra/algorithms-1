@@ -42,7 +42,8 @@ public class Board {
         // Iterate over board and compute the hamming distance
         for (int row = 0; row < this.currentBoard.length; row++) {
             for (int col = 0; col < this.currentBoard[row].length; col++) {
-                if (this.currentBoard[row][col] != this.goalBoard[row][col])
+                if (this.currentBoard[row][col] != this.goalBoard[row][col]
+                        && this.currentBoard[row][col] != 0)
                     hammingScore++;
             }
         }
