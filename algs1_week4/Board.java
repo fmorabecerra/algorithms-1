@@ -51,17 +51,29 @@ public class Board {
         return hammingScore;
     }
 
+    // score = abs(row - row_true) + abs(col - col_true)
+    // score = abs(2 - 2) + abs(0 - 1) = 0 + 1  (for 8)
+
+    // row_true = (val / n) //Module
+    //          = (8 / n) = 2
+
+    // col_true = remainder(val /n) - 1
+    //          = (8 % n) - 1 = 2 - 1 = 1
+
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
         int manhattanScore = 0;
         // Iterate over board and compute the Manhattan distance
         for (int row = 0; row < this.currentBoard.length; row++) {
             for (int col = 0; col < this.currentBoard[row].length; col++) {
-                this.currentBoard[row][col] = row * col;
+                if (this.currentBoard[row][col] != this.goalBoard[row][col]
+                        && this.currentBoard[row][col] != 0)
+                    manhattanScore += Math.abs(row - ((this.currentBoard[row][col] - 1) / this.n))
+                            + Math.abs(col - (this.currentBoard[row][col] - 1) % this.n);
             }
         }
 
-        return 0;
+        return manhattanScore;
     }
 
     // is this board the goal board?
@@ -106,6 +118,7 @@ public class Board {
         StdOut.println(initial.toString());
         StdOut.println("Is goal?: " + initial.isGoal());
         StdOut.println("Hamming score: " + initial.hamming());
+        StdOut.println("Manhattan score: " + initial.manhattan());
     }
 
 }
