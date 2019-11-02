@@ -51,15 +51,6 @@ public class Board {
         return hammingScore;
     }
 
-    // score = abs(row - row_true) + abs(col - col_true)
-    // score = abs(2 - 2) + abs(0 - 1) = 0 + 1  (for 8)
-
-    // row_true = (val / n) //Module
-    //          = (8 / n) = 2
-
-    // col_true = remainder(val /n) - 1
-    //          = (8 % n) - 1 = 2 - 1 = 1
-
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
         int manhattanScore = 0;
@@ -72,7 +63,6 @@ public class Board {
                             + Math.abs(col - (this.currentBoard[row][col] - 1) % this.n);
             }
         }
-
         return manhattanScore;
     }
 
