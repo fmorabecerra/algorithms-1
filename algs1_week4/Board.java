@@ -96,7 +96,11 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return new Board(new int[3][3]);
+        int[][] twinBoard = this.currentBoard.clone();
+        int temp = twinBoard[2][0];
+        twinBoard[2][0] = twinBoard[2][1];
+        twinBoard[2][1] = temp;
+        return new Board(twinBoard);
     }
 
     // unit testing (not graded)
@@ -115,10 +119,11 @@ public class Board {
         StdOut.println("Is goal?: " + initial.isGoal());
         StdOut.println("Hamming score: " + initial.hamming());
         StdOut.println("Manhattan score: " + initial.manhattan());
+        StdOut.println("Twin Board: \n" + initial.twin());
 
-        for (Board b : initial.neighbors()) {
-            StdOut.println(b.toString());
-        }
+        // for (Board b : initial.neighbors()) {
+        //     StdOut.println(b.toString());
+        // }
     }
 
 
