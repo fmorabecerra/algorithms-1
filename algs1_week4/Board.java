@@ -8,6 +8,8 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Board {
     private int n;
@@ -83,10 +85,10 @@ public class Board {
         return true;
     }
 
-    // // all neighboring boards
-    // public Iterable<Board> neighbors() {
-    //     // I forgot how to implement iterable. Comment for now.
-    // }
+    // all neighboring boards
+    public Iterable<Board> neighbors() {
+        return NeighboringBoardsIterator::new;
+    }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
@@ -109,6 +111,43 @@ public class Board {
         StdOut.println("Is goal?: " + initial.isGoal());
         StdOut.println("Hamming score: " + initial.hamming());
         StdOut.println("Manhattan score: " + initial.manhattan());
+
+        for (Board b : initial.neighbors()) {
+            StdOut.println(b.toString());
+        }
+    }
+
+
+    // // My Stuff
+    // public Iterator<Board> iterator() {
+    //     return null;
+    // }
+
+    private class NeighboringBoardsIterator implements Iterator<Board> {
+        private int iteratorI;
+        private final Board[] iteratorArray;
+
+        NeighboringBoardsIterator() {
+            this.iteratorI = Board.this.n;  // Needs to be changed numberOfNeighbors;
+            iteratorArray = (Board[]) new Object[this.iteratorI];
+            // // Fill in iterator array
+            for (int j = 0; j < this.iteratorI; j++) {
+                iteratorArray[j] = new Board(new int[3][3]);
+            }
+        }
+
+        public boolean hasNext() {
+            return iteratorI > 0;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported");
+        }
+
+        public Board next() {
+            if (iteratorI == 0) throw new NoSuchElementException("Iterator: no more items left.");
+            return iteratorArray[--iteratorI];
+        }
     }
 
 }
