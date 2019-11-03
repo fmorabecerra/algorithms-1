@@ -7,9 +7,8 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class Board {
     private int n;
@@ -87,7 +86,12 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return NeighboringBoardsIterator::new;
+        ArrayList<Board> neighbors = new ArrayList<Board>();
+        // Fill in iterable array list
+        for (int j = 0; j < 3; j++) {
+            neighbors.add(new Board(new int[3][3]));
+        }
+        return neighbors;
     }
 
     // a board that is obtained by exchanging any pair of tiles
@@ -119,35 +123,4 @@ public class Board {
 
 
     // // My Stuff
-    // public Iterator<Board> iterator() {
-    //     return null;
-    // }
-
-    private class NeighboringBoardsIterator implements Iterator<Board> {
-        private int iteratorI;
-        private final Board[] iteratorArray;
-
-        NeighboringBoardsIterator() {
-            this.iteratorI = Board.this.n;  // Needs to be changed numberOfNeighbors;
-            iteratorArray = (Board[]) new Object[this.iteratorI];
-            // // Fill in iterator array
-            for (int j = 0; j < this.iteratorI; j++) {
-                iteratorArray[j] = new Board(new int[3][3]);
-            }
-        }
-
-        public boolean hasNext() {
-            return iteratorI > 0;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException("Not supported");
-        }
-
-        public Board next() {
-            if (iteratorI == 0) throw new NoSuchElementException("Iterator: no more items left.");
-            return iteratorArray[--iteratorI];
-        }
-    }
-
 }
