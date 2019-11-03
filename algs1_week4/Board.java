@@ -18,8 +18,7 @@ public class Board {
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
-        this.n = tiles.length;  // This may not be correct. Might be total number of elements.
-        // this.currentBoard = Arrays.copyOf(tiles, this.n);
+        this.n = tiles.length;
         this.currentBoard = tiles.clone();
     }
 
@@ -48,7 +47,6 @@ public class Board {
                     hammingScore++;
             }
         }
-
         return hammingScore;
     }
 
@@ -78,6 +76,7 @@ public class Board {
         if (y == null) return false;
         if (y.getClass() != this.getClass()) return false;
 
+        // Cast y to board object
         Board that = (Board) y;
         if (this.n != that.n) return false;
         if (!Arrays.deepEquals(this.currentBoard, that.currentBoard)) return false;
