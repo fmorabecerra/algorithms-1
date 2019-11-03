@@ -8,19 +8,34 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.ArrayList;
+
 public class Solver {
-    private MinPQ<SearchNode> priorityQueue;
-    private final int minMoves;
+    private int minMoves;
+    private final ArrayList<Board> solutionPath;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException("null");
 
-        this.priorityQueue = new MinPQ<SearchNode>();
-        this.priorityQueue.insert(new SearchNode(initial));
+        MinPQ<SearchNode> priorityQueue = new MinPQ<SearchNode>();
+        priorityQueue.insert(new SearchNode(initial));
         this.minMoves = 0;
+        this.solutionPath = new ArrayList<Board>();
 
-        StdOut.println("Min board: " + this.priorityQueue.min().board);
+        while (true) {
+            // pop element from queue
+            SearchNode currentNode = priorityQueue.delMin();
+            // Stash current search node in solution path
+            solutionPath.add(currentNode.board);
+            this.minMoves++;
+            if (currentNode.board.isGoal()) break;
+            for (Board neighbor : currentNode.board.neighbors()) {
+                priorityQueue.insert(new SearchNode(neighbor));
+            }
+        }
+
+        // StdOut.println("Min board: " + this.priorityQueue.min().board);
     }
 
     // is the initial board solvable? (see below)
@@ -33,10 +48,10 @@ public class Solver {
         return this.minMoves;
     }
 
-    // // sequence of boards in a shortest solution
-    // public Iterable<Board> solution() {
-    //     return Iterable; // Forgot how to do this for now. Will do later
-    // }
+    // sequence of boards in a shortest solution
+    public Iterable<Board> solution() {
+        return this.solutionPath; // Forgot how to do this for now. Will do later
+    }
 
     // // my test client. Comment/Uncomment as nessesary.
     // public static void main(String[] args) {
@@ -63,15 +78,15 @@ public class Solver {
             StdOut.println("No solution possible");
         else {
             StdOut.println("Minimum number of moves = " + solver.moves());
-            // for (Board board : solver.solution())
-            //     StdOut.println(board);
+            for (Board board : solver.solution())
+                StdOut.println(board);
         }
     }
 
 
     // My stuff
 
-    private class SearchNode {
+    private class SearchNode implements Comparable<SearchNode> {
         private Board board;
 
         public SearchNode(Board b) {
