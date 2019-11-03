@@ -19,7 +19,9 @@ public class Board {
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         this.n = tiles.length;
-        this.currentBoard = tiles.clone();
+        this.currentBoard = Arrays.stream(tiles)
+                                  .map(int[]::clone)
+                                  .toArray(int[][]::new);
     }
 
     // string representation of this board
@@ -85,21 +87,38 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        ArrayList<Board> neighbors = new ArrayList<Board>();
-        // Fill in iterable array list
-        for (int j = 0; j < 3; j++) {
-            neighbors.add(new Board(new int[3][3]));
+        ArrayList<Board> neighbors = new ArrayList<Board>();  // Stash neighbors here
+
+        // Iterate over board to find the empty slot
+        for (int row = 0; row < this.currentBoard.length; row++) {
+            for (int col = 0; col < this.currentBoard[row].length; col++) {
+                // Check for empty slot
+                if (this.currentBoard[row][col] == 0) {
+                    // Top neighbor
+                    if (row != 0) {
+                        neighbors.add(swapTiles(row, col, row - 1, col));
+                    }
+                    // Bottom neighbor
+                    if (row != this.n - 1) {
+                        neighbors.add(swapTiles(row, col, row + 1, col));
+                    }
+                    // Left neighbor
+                    if (col != 0) {
+                        neighbors.add(swapTiles(row, col, row, col - 1));
+                    }
+                    // Right neighbor
+                    if (col != this.n - 1) {
+                        neighbors.add(swapTiles(row, col, row, col + 1));
+                    }
+                }
+            }
         }
         return neighbors;
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        int[][] twinBoard = this.currentBoard.clone();
-        int temp = twinBoard[2][0];
-        twinBoard[2][0] = twinBoard[2][1];
-        twinBoard[2][1] = temp;
-        return new Board(twinBoard);
+        return swapTiles(2, 0, 2, 1);
     }
 
     // unit testing (not graded)
@@ -119,12 +138,23 @@ public class Board {
         StdOut.println("Hamming score: " + initial.hamming());
         StdOut.println("Manhattan score: " + initial.manhattan());
         StdOut.println("Twin Board: \n" + initial.twin());
+        StdOut.println("Original Board again: \n" + initial.twin());
 
-        // for (Board b : initial.neighbors()) {
-        //     StdOut.println(b.toString());
-        // }
+        StdOut.println("Neighboring boards:");
+        for (Board b : initial.neighbors()) {
+            StdOut.println(b.toString());
+        }
     }
 
 
-    // // My Stuff
+    // My Stuff
+    private Board swapTiles(int row0, int col0, int row1, int col1) {
+        int[][] twinBoard = Arrays.stream(this.currentBoard)
+                                  .map(int[]::clone)
+                                  .toArray(int[][]::new);
+        int temp = twinBoard[row0][col0];
+        twinBoard[row0][col0] = twinBoard[row1][col1];
+        twinBoard[row1][col1] = temp;
+        return new Board(twinBoard);
+    }
 }
