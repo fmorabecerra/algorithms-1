@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class Board {
     private final int n;
     private final int[][] currentBoard;
-    private final int[][] goalBoard = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
+    private final int[][] goalBoard; //= { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -22,7 +22,21 @@ public class Board {
         this.currentBoard = Arrays.stream(tiles)
                                   .map(int[]::clone)
                                   .toArray(int[][]::new);
+
+        // Initialize goal board
+        this.goalBoard = new int[this.n][this.n];
+        // Populate goal board
+        for (int row = 0; row < this.goalBoard.length; row++) {
+            for (int col = 0; col < this.goalBoard[row].length; col++) {
+                this.goalBoard[row][col] = row * this.n + col + 1;
+                if (row == this.goalBoard.length - 1 && col == this.goalBoard[row].length - 1) {
+                    this.goalBoard[row][col] = 0;
+                }
+            }
+        }
     }
+
+    // val = (row * n + col) + 1
 
     // string representation of this board
     public String toString() {
@@ -118,7 +132,7 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return swapTiles(2, 0, 2, 1);
+        return swapTiles(0, 0, 1, 0);
     }
 
     // unit testing (not graded)
