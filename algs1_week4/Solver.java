@@ -87,7 +87,7 @@ public class Solver {
     // My stuff
 
     private class SearchNode implements Comparable<SearchNode> {
-        private Board board;
+        private final Board board;
 
         public SearchNode(Board b) {
             this.board = b;

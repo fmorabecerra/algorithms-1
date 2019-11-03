@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private int n;
-    private int[][] currentBoard;
-    private int[][] goalBoard = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
+    private final int n;
+    private final int[][] currentBoard;
+    private final int[][] goalBoard = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
