@@ -4,11 +4,16 @@
  *  Description: https://coursera.cs.princeton.edu/algs4/assignments/8puzzle/specification.php
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.MinPQ;
+
 public class Solver {
+    private MinPQ<Board> priorityQueue;
+    private final int minMoves;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-
+        this.priorityQueue.insert(initial);
+        this.minMoves = 0;
     }
 
     // is the initial board solvable? (see below)
@@ -18,7 +23,7 @@ public class Solver {
 
     // min number of moves to solve initial board
     public int moves() {
-        return 0;
+        return this.minMoves;
     }
 
     // // sequence of boards in a shortest solution
