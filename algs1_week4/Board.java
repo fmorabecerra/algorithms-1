@@ -190,16 +190,4 @@ public class Board {
             return 0;
         return (row * this.n + col + 1);
     }
-
-    // private class Location()
-    //
-    // {
-    //     public int row;
-    //     public int col;
-    //
-    //     public Location( int r, int c){
-    //     row = r;
-    //     col = c;
-    // }
-    // }
 }
