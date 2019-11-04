@@ -79,10 +79,10 @@ public class Solver {
         Board initial = new Board(tiles);
 
         StdOut.println("initial board: \n" + initial);
-        StdOut.println("Twin board \n" + initial);
+        StdOut.println("Twin board \n" + initial.twin());
 
         // solve the puzzle
-        Solver solver = new Solver(initial.twin());
+        Solver solver = new Solver(initial);
 
         StdOut.println("size of arraylist:" + solver.solutionPath.size());
         StdOut.println("board:" + solver.solutionPath.get(solver.solutionPath.size() - 2));
@@ -118,8 +118,4 @@ public class Solver {
                     .compare(this.manhattanScore + this.moves, that.manhattanScore + that.moves);
         }
     }
-
-    // private buildSolutionPath() {
-    //     this.solutionPath.add(this.solutionPath.get(this.solutionPath.size() - 1).)
-    // }
 }
