@@ -41,8 +41,6 @@ public class Solver {
                 }
             }
         }
-
-        // StdOut.println("Min board: " + this.priorityQueue.min().board);
     }
 
     // is the initial board solvable? (see below)
