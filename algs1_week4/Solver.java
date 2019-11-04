@@ -34,8 +34,11 @@ public class Solver {
             currentNode = priorityQueue.delMin();
             // Check if Goal board is found. End search if so.
             if (currentNode.board.isGoal()) {
-                this.minMoves = currentNode.moves;
                 this.solvable = !currentNode.isTwin;
+                if (this.solvable)
+                    this.minMoves = currentNode.moves;
+                else
+                    this.minMoves = -1;
                 break;
             }
             // Add all neighbors to queue for next round.
@@ -47,13 +50,15 @@ public class Solver {
             }
         }
 
-        // Build array list here
-        while (currentNode != null) {
-            solutionPath.add(currentNode.board);
-            currentNode = currentNode.previousNode;
+        if (this.solvable) {
+            // Build array list here
+            while (currentNode != null) {
+                solutionPath.add(currentNode.board);
+                currentNode = currentNode.previousNode;
+            }
+            // Reverse the list
+            Collections.reverse(solutionPath);
         }
-        // Reverse the list
-        Collections.reverse(solutionPath);
     }
 
     // is the initial board solvable? (see below)
@@ -68,7 +73,10 @@ public class Solver {
 
     // sequence of boards in a shortest solution
     public Iterable<Board> solution() {
-        return this.solutionPath; // Forgot how to do this for now. Will do later
+        if (this.solvable)
+            return this.solutionPath;
+        else
+            return null;
     }
 
     // test client.
@@ -90,6 +98,7 @@ public class Solver {
         Solver solver = new Solver(initial);
 
         StdOut.println("size of arraylist:" + solver.solutionPath.size());
+        StdOut.println("Number of moves:" + solver.moves());
 
         // print solution to standard output
         if (!solver.isSolvable())
