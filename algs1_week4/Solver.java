@@ -96,12 +96,10 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private final Board board;
-        // private final int hammingScore;
         private final int manhattanScore;
 
         public SearchNode(Board b) {
             this.board = b;
-            // this.hammingScore = this.board.hamming();
             this.manhattanScore = this.board.manhattan();
         }
 
