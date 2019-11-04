@@ -11,7 +11,8 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.ArrayList;
 
 public class Solver {
-    private int minMoves;
+    private final int minMoves;
+    private final boolean solvable;
     private final ArrayList<Board> solutionPath;
 
     // find a solution to the initial board (using the A* algorithm)
@@ -19,25 +20,29 @@ public class Solver {
         if (initial == null) throw new IllegalArgumentException("null");
 
         MinPQ<SearchNode> priorityQueue = new MinPQ<SearchNode>();
-        priorityQueue.insert(new SearchNode(initial, null, 0));
-        // this.minMoves = 0;
+        // Insert initial board to queue.
+        priorityQueue.insert(new SearchNode(initial, null, 0, false));
+        // Insert twin to see which one gives a solution first
+        priorityQueue.insert(new SearchNode(initial.twin(), null, 0, true));
         this.solutionPath = new ArrayList<Board>();
 
         while (true) {
-            // pop element from queue
+            // Pop element from queue with lowest priority score.
             SearchNode currentNode = priorityQueue.delMin();
             // Stash current search node in solution path
             solutionPath.add(currentNode.board);
-            // Check if Goal board is found
+            // Check if Goal board is found. End search if so.
             if (currentNode.board.isGoal()) {
                 this.minMoves = currentNode.moves;
+                this.solvable = !currentNode.isTwin;
                 break;
             }
+            // Add all neighbors to queue for next round.
             for (Board neighbor : currentNode.board.neighbors()) {
-                if (currentNode.previousNode == null || !neighbor
-                        .equals(currentNode.previousNode.board))
-                    priorityQueue
-                            .insert(new SearchNode(neighbor, currentNode, currentNode.moves + 1));
+                if (currentNode.previousNode == null
+                        || !neighbor.equals(currentNode.previousNode.board))
+                    priorityQueue.insert(new SearchNode(neighbor, currentNode,
+                                                        currentNode.moves + 1, currentNode.isTwin));
             }
         }
         // Build array list here
@@ -51,7 +56,7 @@ public class Solver {
 
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
-        return true;
+        return this.solvable;
     }
 
     // min number of moves to solve initial board
@@ -63,11 +68,6 @@ public class Solver {
     public Iterable<Board> solution() {
         return this.solutionPath; // Forgot how to do this for now. Will do later
     }
-
-    // // my test client. Comment/Uncomment as nessesary.
-    // public static void main(String[] args) {
-    //
-    // }
 
     // test client.
     public static void main(String[] args) {
@@ -101,19 +101,20 @@ public class Solver {
     }
 
 
-    // My stuff
-
+    // We need a search node class for priority queue to work.
     private class SearchNode implements Comparable<SearchNode> {
         private final Board board;
         private final SearchNode previousNode;
         private final int manhattanScore;
         private final int moves;
+        private final boolean isTwin;
 
-        public SearchNode(Board b, SearchNode previous, int mvs) {
+        public SearchNode(Board b, SearchNode previous, int mvs, boolean isTwin) {
             this.board = b;
             this.previousNode = previous;
             this.manhattanScore = this.board.manhattan();
             this.moves = mvs;
+            this.isTwin = isTwin;
         }
 
         public int compareTo(SearchNode that) {
