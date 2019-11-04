@@ -28,8 +28,8 @@ public class Solver {
             SearchNode currentNode = priorityQueue.delMin();
             // Stash current search node in solution path
             solutionPath.add(currentNode.board);
-            this.minMoves++;
             if (currentNode.board.isGoal()) break;
+            this.minMoves++;  // Move to afterwards
             for (Board neighbor : currentNode.board.neighbors()) {
                 priorityQueue.insert(new SearchNode(neighbor));
             }
