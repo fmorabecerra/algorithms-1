@@ -19,8 +19,8 @@ public class Solver {
         if (initial == null) throw new IllegalArgumentException("null");
 
         MinPQ<SearchNode> priorityQueue = new MinPQ<SearchNode>();
-        priorityQueue.insert(new SearchNode(initial));
-        this.minMoves = 0;
+        priorityQueue.insert(new SearchNode(initial, null));
+        this.minMoves = -1;
         this.solutionPath = new ArrayList<Board>();
 
         while (true) {
@@ -31,16 +31,17 @@ public class Solver {
             if (currentNode.board.isGoal()) break;
             this.minMoves++;  // Move to afterwards
             for (Board neighbor : currentNode.board.neighbors()) {
-                if (solutionPath.size() == 1) {
-                    priorityQueue.insert(new SearchNode(neighbor));
-                }
-                else {
-                    // Do optimization
-                    if (!neighbor.equals(solutionPath.get(solutionPath.size() - 2)))
-                        priorityQueue.insert(new SearchNode(neighbor));
-                }
+                if (!neighbor.equals(currentNode.previousBoard))
+                    priorityQueue.insert(new SearchNode(neighbor, currentNode.board));
             }
         }
+        // Build array list here
+        // while (solutionPath.get(solutionPath.size() - 1). != null) {
+        //     // buildSolutionPath();
+        //     solutionPath.add(solutionPath.size() - 1)
+        // }
+        // Reverse the list
+        // Collections.reverse();
     }
 
     // is the initial board solvable? (see below)
@@ -75,6 +76,9 @@ public class Solver {
                 tiles[i][j] = in.readInt();
         Board initial = new Board(tiles);
 
+        StdOut.println("initial board: \n" + initial);
+        StdOut.println("Twin board \n" + initial.twin());
+
         // solve the puzzle
         Solver solver = new Solver(initial);
 
@@ -96,10 +100,13 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private final Board board;
+        private final Board previousBoard;
+        // private final SearchNode prevNode
         private final int manhattanScore;
 
-        public SearchNode(Board b) {
+        public SearchNode(Board b, Board previous) {
             this.board = b;
+            this.previousBoard = previous;
             this.manhattanScore = this.board.manhattan();
         }
 
@@ -107,4 +114,8 @@ public class Solver {
             return Integer.compare(this.manhattanScore, that.manhattanScore);
         }
     }
+
+    // private buildSolutionPath() {
+    //     this.solutionPath.add(this.solutionPath.get(this.solutionPath.size() - 1).)
+    // }
 }
