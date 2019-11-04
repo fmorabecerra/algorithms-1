@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Solver {
     private final int minMoves;
@@ -24,13 +25,13 @@ public class Solver {
         priorityQueue.insert(new SearchNode(initial, null, 0, false));
         // Insert twin to see which one gives a solution first
         priorityQueue.insert(new SearchNode(initial.twin(), null, 0, true));
+        // Initialize solution path iterable array list
         this.solutionPath = new ArrayList<Board>();
 
+        SearchNode currentNode;
         while (true) {
             // Pop element from queue with lowest priority score.
-            SearchNode currentNode = priorityQueue.delMin();
-            // Stash current search node in solution path
-            solutionPath.add(currentNode.board);
+            currentNode = priorityQueue.delMin();
             // Check if Goal board is found. End search if so.
             if (currentNode.board.isGoal()) {
                 this.minMoves = currentNode.moves;
@@ -45,13 +46,14 @@ public class Solver {
                                                         currentNode.moves + 1, currentNode.isTwin));
             }
         }
+
         // Build array list here
-        // while (solutionPath.get(solutionPath.size() - 1). != null) {
-        //     // buildSolutionPath();
-        //     solutionPath.add(solutionPath.size() - 1)
-        // }
+        while (currentNode != null) {
+            solutionPath.add(currentNode.board);
+            currentNode = currentNode.previousNode;
+        }
         // Reverse the list
-        // Collections.reverse();
+        Collections.reverse(solutionPath);
     }
 
     // is the initial board solvable? (see below)
@@ -88,7 +90,6 @@ public class Solver {
         Solver solver = new Solver(initial);
 
         StdOut.println("size of arraylist:" + solver.solutionPath.size());
-        StdOut.println("board:" + solver.solutionPath.get(solver.solutionPath.size() - 2));
 
         // print solution to standard output
         if (!solver.isSolvable())
