@@ -13,7 +13,6 @@ import java.util.Arrays;
 public class Board {
     private final int n;
     private final int[][] currentBoard;
-    private final int[][] goalBoard; //= { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 }, };
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -22,21 +21,7 @@ public class Board {
         this.currentBoard = Arrays.stream(tiles)
                                   .map(int[]::clone)
                                   .toArray(int[][]::new);
-
-        // Initialize goal board
-        this.goalBoard = new int[this.n][this.n];
-        // Populate goal board
-        for (int row = 0; row < this.goalBoard.length; row++) {
-            for (int col = 0; col < this.goalBoard[row].length; col++) {
-                this.goalBoard[row][col] = row * this.n + col + 1;
-                if (row == this.goalBoard.length - 1 && col == this.goalBoard[row].length - 1) {
-                    this.goalBoard[row][col] = 0;
-                }
-            }
-        }
     }
-
-    // val = (row * n + col) + 1
 
     // string representation of this board
     public String toString() {
@@ -58,7 +43,7 @@ public class Board {
         // Iterate over board and compute the hamming distance
         for (int row = 0; row < this.currentBoard.length; row++) {
             for (int col = 0; col < this.currentBoard[row].length; col++) {
-                if (this.currentBoard[row][col] != this.goalBoard[row][col]
+                if (this.currentBoard[row][col] != this.correctValue(row, col)
                         && this.currentBoard[row][col] != 0)
                     hammingScore++;
             }
@@ -72,7 +57,7 @@ public class Board {
         // Iterate over board and compute the Manhattan distance
         for (int row = 0; row < this.currentBoard.length; row++) {
             for (int col = 0; col < this.currentBoard[row].length; col++) {
-                if (this.currentBoard[row][col] != this.goalBoard[row][col]
+                if (this.currentBoard[row][col] != this.correctValue(row, col)
                         && this.currentBoard[row][col] != 0)
                     manhattanScore += Math.abs(row - ((this.currentBoard[row][col] - 1) / this.n))
                             + Math.abs(col - (this.currentBoard[row][col] - 1) % this.n);
@@ -83,7 +68,14 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return Arrays.deepEquals(this.goalBoard, this.currentBoard);
+        // return Arrays.deepEquals(this.goalBoard, this.currentBoard);
+        for (int row = 0; row < this.currentBoard.length; row++) {
+            for (int col = 0; col < this.currentBoard[row].length; col++) {
+                if (this.currentBoard[row][col] != this.correctValue(row, col))
+                    return false;
+            }
+        }
+        return true;
     }
 
     // does this board equal y?
@@ -170,5 +162,11 @@ public class Board {
         twinBoard[row0][col0] = twinBoard[row1][col1];
         twinBoard[row1][col1] = temp;
         return new Board(twinBoard);
+    }
+
+    private int correctValue(int row, int col) {
+        if (row == this.currentBoard.length - 1 && col == this.currentBoard[row].length - 1)
+            return 0;
+        return (row * this.n + col + 1);
     }
 }
