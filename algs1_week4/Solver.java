@@ -19,8 +19,8 @@ public class Solver {
         if (initial == null) throw new IllegalArgumentException("null");
 
         MinPQ<SearchNode> priorityQueue = new MinPQ<SearchNode>();
-        priorityQueue.insert(new SearchNode(initial, null));
-        this.minMoves = -1;
+        priorityQueue.insert(new SearchNode(initial, null, 0));
+        // this.minMoves = 0;
         this.solutionPath = new ArrayList<Board>();
 
         while (true) {
@@ -31,8 +31,10 @@ public class Solver {
             if (currentNode.board.isGoal()) break;
             this.minMoves++;  // Move to afterwards
             for (Board neighbor : currentNode.board.neighbors()) {
-                if (!neighbor.equals(currentNode.previousBoard))
-                    priorityQueue.insert(new SearchNode(neighbor, currentNode.board));
+                if (currentNode.previousNode != null && !neighbor
+                        .equals(currentNode.previousNode.board))
+                    priorityQueue
+                            .insert(new SearchNode(neighbor, currentNode, currentNode.moves + 1));
             }
         }
         // Build array list here
@@ -77,10 +79,10 @@ public class Solver {
         Board initial = new Board(tiles);
 
         StdOut.println("initial board: \n" + initial);
-        StdOut.println("Twin board \n" + initial.twin());
+        StdOut.println("Twin board \n" + initial);
 
         // solve the puzzle
-        Solver solver = new Solver(initial);
+        Solver solver = new Solver(initial.twin());
 
         StdOut.println("size of arraylist:" + solver.solutionPath.size());
         StdOut.println("board:" + solver.solutionPath.get(solver.solutionPath.size() - 2));
@@ -100,18 +102,20 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private final Board board;
-        private final Board previousBoard;
-        // private final SearchNode prevNode
+        private final SearchNode previousNode;
         private final int manhattanScore;
+        private final int moves;
 
-        public SearchNode(Board b, Board previous) {
+        public SearchNode(Board b, SearchNode previous, int mvs) {
             this.board = b;
-            this.previousBoard = previous;
+            this.previousNode = previous;
             this.manhattanScore = this.board.manhattan();
+            this.moves = mvs;
         }
 
         public int compareTo(SearchNode that) {
-            return Integer.compare(this.manhattanScore, that.manhattanScore);
+            return Integer
+                    .compare(this.manhattanScore + this.moves, that.manhattanScore + that.moves);
         }
     }
 
