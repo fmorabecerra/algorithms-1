@@ -31,7 +31,14 @@ public class Solver {
             if (currentNode.board.isGoal()) break;
             this.minMoves++;  // Move to afterwards
             for (Board neighbor : currentNode.board.neighbors()) {
-                priorityQueue.insert(new SearchNode(neighbor));
+                if (solutionPath.size() == 1) {
+                    priorityQueue.insert(new SearchNode(neighbor));
+                }
+                else {
+                    // Do optimization
+                    if (!neighbor.equals(solutionPath.get(solutionPath.size() - 2)))
+                        priorityQueue.insert(new SearchNode(neighbor));
+                }
             }
         }
 
@@ -73,6 +80,9 @@ public class Solver {
         // solve the puzzle
         Solver solver = new Solver(initial);
 
+        StdOut.println("size of arraylist:" + solver.solutionPath.size());
+        StdOut.println("board:" + solver.solutionPath.get(solver.solutionPath.size() - 2));
+
         // print solution to standard output
         if (!solver.isSolvable())
             StdOut.println("No solution possible");
@@ -88,13 +98,17 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private final Board board;
+        // private final int hammingScore;
+        private final int manhattanScore;
 
         public SearchNode(Board b) {
             this.board = b;
+            // this.hammingScore = this.board.hamming();
+            this.manhattanScore = this.board.manhattan();
         }
 
         public int compareTo(SearchNode that) {
-            return Integer.compare(this.board.manhattan(), that.board.manhattan());
+            return Integer.compare(this.manhattanScore, that.manhattanScore);
         }
     }
 }
