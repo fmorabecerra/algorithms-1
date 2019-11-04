@@ -124,7 +124,28 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return swapTiles(0, 0, 1, 0);
+        int row0 = 0;
+        int col0 = 0;
+        int row1 = 0;
+        int col1 = 0;
+        int loc = 0;
+        for (int row = 0; row < this.currentBoard.length; row++) {
+            for (int col = 0; col < this.currentBoard[row].length; col++) {
+                if (this.currentBoard[row][col] != 0) {
+                    if (loc == 0) {
+                        row0 = row;
+                        col0 = col;
+                        loc++;
+                    }
+                    else {
+                        row1 = row;
+                        col1 = col;
+                        break;
+                    }
+                }
+            }
+        }
+        return swapTiles(row0, col0, row1, col1);
     }
 
     // unit testing (not graded)
@@ -169,4 +190,16 @@ public class Board {
             return 0;
         return (row * this.n + col + 1);
     }
+
+    // private class Location()
+    //
+    // {
+    //     public int row;
+    //     public int col;
+    //
+    //     public Location( int r, int c){
+    //     row = r;
+    //     col = c;
+    // }
+    // }
 }
