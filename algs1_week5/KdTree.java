@@ -1,7 +1,7 @@
 /* *****************************************************************************
  *  Name: pancho
  *  Date:
- *  Description:
+ *  Description: https://coursera.cs.princeton.edu/algs4/assignments/kdtree/specification.php
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.Point2D;
