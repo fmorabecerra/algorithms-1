@@ -60,7 +60,7 @@ public class PointSET {
         if (this.isEmpty()) return null;
         Point2D closestPoint = this.points.first();
         for (Point2D point : this.points) {
-            if (p.distanceTo(point) > p.distanceTo(closestPoint))
+            if (p.distanceTo(point) < p.distanceTo(closestPoint))
                 closestPoint = point;
         }
         return closestPoint;
