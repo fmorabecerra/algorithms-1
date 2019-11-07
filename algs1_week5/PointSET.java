@@ -58,12 +58,15 @@ public class PointSET {
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         if (this.isEmpty()) return null;
-        Point2D closestPoint = this.points.first();
+        Point2D nearestPoint = this.points.first();
+        double nearestDistance = p.distanceTo(nearestPoint);
         for (Point2D point : this.points) {
-            if (p.distanceTo(point) < p.distanceTo(closestPoint))
-                closestPoint = point;
+            if (p.distanceTo(point) < nearestDistance) {
+                nearestDistance = p.distanceTo(point);
+                nearestPoint = point;
+            }
         }
-        return closestPoint;
+        return nearestPoint;
     }
 
     // unit testing of the methods (optional)
