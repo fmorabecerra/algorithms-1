@@ -52,4 +52,17 @@ public class KdTree {
     public static void main(String[] args) {
 
     }
+
+
+    // My stuff
+
+    private static class KdNode {
+        private Point2D point;
+        private KdNode leftOrBottomNode;        // the left/bottom subtree
+        private KdNode rightOrTopNode;        // the right/top subtree
+
+        public KdNode(Point2D p) {
+            this.point = p;
+        }
+    }
 }
