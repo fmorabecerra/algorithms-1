@@ -19,12 +19,12 @@ public class KdTree {
 
     // is the set empty?
     public boolean isEmpty() {
-        return true;
+        return this.kdSize == 0;
     }
 
     // number of points in the set
     public int size() {
-        return 0;
+        return this.kdSize;
     }
 
     // add the point to the set (if it is not already in the set)
