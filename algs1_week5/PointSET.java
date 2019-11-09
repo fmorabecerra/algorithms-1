@@ -81,8 +81,8 @@ public class PointSET {
         In in = new In(filename);
         PointSET brute = new PointSET();
         // KdTree kdtree = new KdTree();
-        // while (!in.isEmpty()) {
-        for (int i = 0; i < 200; i++) {
+        while (!in.isEmpty()) {
+            // for (int i = 0; i < 200; i++) {
             double x = in.readDouble();
             double y = in.readDouble();
             Point2D p = new Point2D(x, y);
