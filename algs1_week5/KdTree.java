@@ -8,9 +8,13 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 
 public class KdTree {
+    private KdNode rootNode;
+    private int kdSize;
+
     // construct an empty set of points
     public KdTree() {
-
+        this.rootNode = null;
+        this.kdSize = 0;
     }
 
     // is the set empty?
