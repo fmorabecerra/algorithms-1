@@ -83,6 +83,7 @@ public class KdTree {
             // brute.insert(p);
         }
         StdOut.println("Size of tree: " + kdtree.size());
+        StdOut.println("Does it contain the point: " + kdtree.contains(new Point2D(0.6, 0.0)));
     }
 
 
