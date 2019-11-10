@@ -51,7 +51,7 @@ public class KdTree {
 
     // draw all points to standard draw
     public void draw() {
-
+        drawRecursively(rootNode, true);
     }
 
     // all points that are inside the rectangle (or on the boundary)
@@ -141,5 +141,20 @@ public class KdTree {
             else
                 return this.rightOrTopNode;
         }
+    }
+
+    private void drawRecursively(KdNode node, boolean drawHorizontalX) {
+        node.point.draw();
+        // if (drawHorizontalX) {
+        //     // Draw horizontal line
+        // }
+        // else {
+        //     // Draw verticle line
+        // }
+        // Now draw children
+        if (node.leftOrBottomNode != null)
+            drawRecursively(node.leftOrBottomNode, !drawHorizontalX);
+        if (node.rightOrTopNode != null)
+            drawRecursively(node.rightOrTopNode, !drawHorizontalX);
     }
 }
