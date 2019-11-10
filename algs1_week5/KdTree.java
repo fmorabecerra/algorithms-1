@@ -112,7 +112,7 @@ public class KdTree {
 
     // Private node class
     private static class KdNode {
-        private Point2D point;
+        private final Point2D point;
         private KdNode leftOrBottomNode;        // the left/bottom subtree
         private KdNode rightOrTopNode;        // the right/top subtree
 
