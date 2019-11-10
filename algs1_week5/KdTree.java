@@ -86,6 +86,8 @@ public class KdTree {
 
     // My stuff
     private void compareNode(KdNode node, KdNode newNode, boolean compareHorizontalX) {
+        // Check to make sure that point doesn't already match
+        if (node.point.equals(newNode.point)) return;
         // Which direction should we take?
         boolean goLeftOrBottom;
         if (compareHorizontalX) {  // You may need to include this as part of the node. do not want to repeat.
