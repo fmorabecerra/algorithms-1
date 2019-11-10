@@ -7,6 +7,7 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdOut;
 
 public class KdTree {
     private KdNode rootNode;
@@ -40,13 +41,13 @@ public class KdTree {
         }
 
         // If root is not empty then start figuring out where to place the new node
-        compareNode(rootNode, new KdNode(p), true);
+        compareNodeInsert(this.rootNode, new KdNode(p), true);
     }
 
     // does the set contain point p?
     public boolean contains(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Arg is null");
-        return true;
+        return compareNodeSearch(this.rootNode, new KdNode(p), true);
     }
 
     // draw all points to standard draw
@@ -81,40 +82,32 @@ public class KdTree {
             kdtree.insert(p);
             // brute.insert(p);
         }
+        StdOut.println("Size of tree: " + kdtree.size());
     }
 
 
     // My stuff
-    private void compareNode(KdNode node, KdNode newNode, boolean compareHorizontalX) {
-        // Check to make sure that point doesn't already match
-        if (node.point.equals(newNode.point)) return;
-        // Which direction should we take?
-        boolean goLeftOrBottom;
-        if (compareHorizontalX) {  // You may need to include this as part of the node. do not want to repeat.
-            if (newNode.point.x() < node.point.x()) {
-                goLeftOrBottom = true;
-            }
-            else {
-                goLeftOrBottom = false;
-            }
-        }
-        else {
-            if (newNode.point.y() < node.point.y()) { // How to deal with tie breakers
-                goLeftOrBottom = true;
-            }
-            else {
-                goLeftOrBottom = false;
-            }
-        }
+    // Build based on compareNodeInsert
+    private boolean compareNodeSearch(KdNode node, KdNode newNode, boolean compareHorizontalX) {
+        if (node.point.equals(newNode.point)) return true;  // Points equal
+        boolean goLeftOrBottom = newNode.compareToNode(node, compareHorizontalX);
+        // If Child is empty that it was not found
+        if (node.getChildNode(goLeftOrBottom) == null) return false;
+        else  // Do a recursive call
+            return compareNodeSearch(node.getChildNode(goLeftOrBottom), newNode,
+                                     !compareHorizontalX);
+    }
 
+    private void compareNodeInsert(KdNode node, KdNode newNode, boolean compareHorizontalX) {
+        if (node.point.equals(newNode.point)) return;  // Points equal
+        boolean goLeftOrBottom = newNode.compareToNode(node, compareHorizontalX);
         // If child is empty then set here otherwise start search again
         if (node.getChildNode(goLeftOrBottom) == null) {
             node.setChildNode(goLeftOrBottom, newNode);
             ++this.kdSize;
         }
-        else {
-            compareNode(node.getChildNode(goLeftOrBottom), newNode, !compareHorizontalX);
-        }
+        else  // Do a recursive call
+            compareNodeInsert(node.getChildNode(goLeftOrBottom), newNode, !compareHorizontalX);
     }
 
     // Private node class
@@ -128,6 +121,13 @@ public class KdTree {
             this.point = p;
             this.leftOrBottomNode = null;
             this.rightOrTopNode = null;
+        }
+
+        public boolean compareToNode(KdNode node, boolean compareHorizontalX) {
+            if (compareHorizontalX)
+                return (this.point.x() < node.point.x());
+            else
+                return (this.point.y() < node.point.y());
         }
 
         public void setChildNode(boolean setLeftOrBottom, KdNode newNode) {
