@@ -63,10 +63,10 @@ public class PointSET {
         if (p == null) throw new IllegalArgumentException("Arg is null");
         if (this.isEmpty()) return null;
         Point2D nearestPoint = this.points.first();
-        double nearestDistance = p.distanceTo(nearestPoint);
+        double nearestDistance = p.distanceSquaredTo(nearestPoint);
         for (Point2D point : this.points) {
-            if (p.distanceTo(point) < nearestDistance) {
-                nearestDistance = p.distanceTo(point);
+            if (p.distanceSquaredTo(point) < nearestDistance) {
+                nearestDistance = p.distanceSquaredTo(point);
                 nearestPoint = point;
             }
         }
