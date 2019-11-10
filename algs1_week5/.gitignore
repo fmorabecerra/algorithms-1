@@ -1,4 +1,6 @@
 .idea/*
 .lift/*
+.idea.orig/*
+.lift.orig/*
 *.txt
 *.png
