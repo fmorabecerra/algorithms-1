@@ -47,6 +47,7 @@ public class KdTree {
     // does the set contain point p?
     public boolean contains(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Arg is null");
+        if (this.isEmpty()) return false;
         return compareNodeSearch(this.rootNode, new KdNode(p), true);
     }
 
