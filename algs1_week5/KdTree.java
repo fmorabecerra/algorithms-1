@@ -115,9 +115,8 @@ public class KdTree {
             areSubTreePointsInRect(node.leftOrBottomNode, rect, !horizontalX);
             areSubTreePointsInRect(node.rightOrTopNode, rect, !horizontalX);
         }
-        else {
+        else
             areSubTreePointsInRect(node.getChildNode(whereToLook < 0), rect, !horizontalX);
-        }
     }
 
     // Build based on compareNodeInsert
