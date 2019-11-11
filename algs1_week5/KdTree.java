@@ -15,7 +15,9 @@ import java.util.ArrayList;
 public class KdTree {
     private KdNode rootNode;
     private int kdSize;
-    private ArrayList<Point2D> pointsInRectangle;
+    private ArrayList<Point2D> gPointsInRectangle;
+    private Point2D gNearestPoint;
+    private double gNearestDist;
 
     // construct an empty set of points
     public KdTree() {
@@ -63,17 +65,21 @@ public class KdTree {
     // all points that are inside the rectangle (or on the boundary)
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new IllegalArgumentException("Arg is null");
-        this.pointsInRectangle = new ArrayList<Point2D>();
+        this.gPointsInRectangle = new ArrayList<Point2D>();
         // Do recursive range search if tree is not empty
         if (!this.isEmpty())
             areSubTreePointsInRect(this.rootNode, rect, true);
-        return this.pointsInRectangle;
+        return this.gPointsInRectangle;
     }
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Arg is null");
-        return null;
+        if (isEmpty()) return null;
+        this.gNearestPoint = rootNode.point;
+        this.gNearestDist = gNearestPoint.distanceSquaredTo(p);
+        findNearestInNode(rootNode, p);
+        return this.gNearestPoint;
     }
 
     // unit testing of the methods (optional)
@@ -102,11 +108,21 @@ public class KdTree {
 
 
     // My stuff
+    private void findNearestInNode(KdNode node, Point2D queryPt) {
+        if (node == null || node.rect.distanceSquaredTo(queryPt) > gNearestDist) return;
+        if (node.point.distanceSquaredTo(queryPt) < gNearestDist) {
+            this.gNearestPoint = node.point;
+            this.gNearestDist = node.point.distanceSquaredTo(queryPt);
+        }
+        findNearestInNode(node.leftOrBottomNode, queryPt);
+        findNearestInNode(node.rightOrTopNode, queryPt);
+    }
+
     private void areSubTreePointsInRect(KdNode node, RectHV rect, boolean horizontalX) {
         if (node == null) return;
         int whereToLook;
         if (rect.contains(node.point)) {
-            this.pointsInRectangle.add(node.point);
+            this.gPointsInRectangle.add(node.point);
             whereToLook = 0; // You have to search both sides
         }
         else
