@@ -180,12 +180,12 @@ public class KdTree {
                 return (this.point.y() < node.point.y());
         }
 
-        public int lineIntersets(RectHV rect, boolean lookAtHorizontalX) {
+        public int lineIntersets(RectHV r, boolean lookAtHorizontalX) {
             if (lookAtHorizontalX)
                 // Rectangle is to the left
-                if (rect.xmin() < this.point.x() && rect.xmax() < this.point.x()) return -1;
+                if (r.xmin() < this.point.x() && r.xmax() < this.point.x()) return -1;
                     // Rectangle is to the right
-                else if (rect.xmin() > this.point.x() && rect.xmax() > this.point.x()) return +1;
+                else if (r.xmin() > this.point.x() && r.xmax() > this.point.x()) return +1;
                     // Node line intersects rectangle.
                 else return 0;
             else
