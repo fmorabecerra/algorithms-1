@@ -38,20 +38,20 @@ public class KdTree {
 
         // Check if root is empty
         if (this.rootNode == null) {
-            this.rootNode = new KdNode(p);
+            this.rootNode = new KdNode(p, new RectHV(0, 0, 1, 1));
             ++this.kdSize;
             return;
         }
 
         // If root is not empty then start figuring out where to place the new node
-        compareNodeInsert(this.rootNode, new KdNode(p), true);
+        compareNodeInsert(this.rootNode, new KdNode(p, null), true);
     }
 
     // does the set contain point p?
     public boolean contains(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Arg is null");
         if (this.isEmpty()) return false;
-        return compareNodeSearch(this.rootNode, new KdNode(p), true);
+        return compareNodeSearch(this.rootNode, new KdNode(p, null), true);
     }
 
     // draw all points to standard draw
@@ -135,7 +135,7 @@ public class KdTree {
         boolean goLeftOrBottom = newNode.compareToNode(node, compareHorizontalX);
         // If child is empty then set here otherwise start search again
         if (node.getChildNode(goLeftOrBottom) == null) {
-            node.setChildNode(goLeftOrBottom, newNode);
+            node.setChildNode(goLeftOrBottom, newNode, compareHorizontalX);
             ++this.kdSize;
         }
         else  // Do a recursive call
@@ -147,12 +147,29 @@ public class KdTree {
         private final Point2D point;
         private KdNode leftOrBottomNode;        // the left/bottom subtree
         private KdNode rightOrTopNode;        // the right/top subtree
+        private RectHV rect;
 
-        public KdNode(Point2D p) {
+        public KdNode(Point2D p, RectHV rectangle) {
             if (p == null) throw new IllegalArgumentException("Arg is null");
             this.point = p;
+            this.rect = rectangle;
             this.leftOrBottomNode = null;
             this.rightOrTopNode = null;
+        }
+
+        public RectHV getChildRect(boolean leftOrBottom, boolean getHorizontalX) {
+            if (getHorizontalX) {  // Changing x only
+                if (leftOrBottom)  // Changing x max only
+                    return new RectHV(rect.xmin(), rect.ymin(), point.x(), rect.ymax());
+                else  // Changing x min only
+                    return new RectHV(point.x(), rect.ymin(), rect.xmax(), rect.ymax());
+            }
+            else {  // Changing y only
+                if (leftOrBottom)  // Changing y max only
+                    return new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), point.y());
+                else  // Changing y min only
+                    return new RectHV(rect.xmin(), point.y(), rect.xmax(), rect.ymax());
+            }
         }
 
         public boolean compareToNode(KdNode node, boolean compareHorizontalX) {
@@ -179,11 +196,15 @@ public class KdTree {
                 else return 0;
         }
 
-        public void setChildNode(boolean setLeftOrBottom, KdNode newNode) {
-            if (setLeftOrBottom)
+        public void setChildNode(boolean setLeftOrBottom, KdNode newNode, boolean horizontalX) {
+            if (setLeftOrBottom) {
                 this.leftOrBottomNode = newNode;
-            else
+                this.leftOrBottomNode.rect = getChildRect(true, horizontalX);
+            }
+            else {
                 this.rightOrTopNode = newNode;
+                this.rightOrTopNode.rect = getChildRect(false, horizontalX);
+            }
         }
 
         public KdNode getChildNode(boolean getLeftOrBottom) {
