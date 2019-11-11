@@ -7,6 +7,7 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
@@ -216,13 +217,18 @@ public class KdTree {
     }
 
     private void drawRecursively(KdNode node, boolean drawHorizontalX) {
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.01);
         node.point.draw();
-        // if (drawHorizontalX) {
-        //     // Draw horizontal line
-        // }
-        // else {
-        //     // Draw verticle line
-        // }
+        StdDraw.setPenRadius(0.003);
+        if (drawHorizontalX) {  // Draw vertical line
+            StdDraw.setPenColor(StdDraw.RED);
+            StdDraw.line(node.point.x(), node.rect.ymin(), node.point.x(), node.rect.ymax());
+        }
+        else {  // Draw horizontal line
+            StdDraw.setPenColor(StdDraw.BLUE);
+            StdDraw.line(node.rect.xmin(), node.point.y(), node.rect.xmax(), node.point.y());
+        }
         // Now draw children
         if (node.leftOrBottomNode != null)
             drawRecursively(node.leftOrBottomNode, !drawHorizontalX);
