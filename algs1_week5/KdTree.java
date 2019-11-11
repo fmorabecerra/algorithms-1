@@ -114,6 +114,7 @@ public class KdTree {
             this.gNearestPoint = node.point;
             this.gNearestDist = node.point.distanceSquaredTo(queryPt);
         }
+        // Need to select nearest direction to point.
         findNearestInNode(node.leftOrBottomNode, queryPt);
         findNearestInNode(node.rightOrTopNode, queryPt);
     }
