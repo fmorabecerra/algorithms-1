@@ -100,7 +100,7 @@ public class KdTree {
         StdOut.println("Size of tree: " + kdtree.size());
         StdOut.println("Does it contain the point: " + kdtree.contains(new Point2D(0.6, 0.0)));
 
-        RectHV rect = new RectHV(0.25, 0.0, 0.75, 0.625);
+        RectHV rect = new RectHV(0.13, 0.57, 0.69, 0.8);
         StdOut.println("Rect dimentions" + rect);
         for (Point2D p : kdtree.range(rect))
             StdOut.println("Point in range: " + p);
@@ -109,14 +109,17 @@ public class KdTree {
 
     // My stuff
     private void findNearestInNode(KdNode node, Point2D queryPt) {
-        if (node == null || node.rect.distanceSquaredTo(queryPt) > gNearestDist) return;
         if (node.point.distanceSquaredTo(queryPt) < gNearestDist) {
             this.gNearestPoint = node.point;
             this.gNearestDist = node.point.distanceSquaredTo(queryPt);
         }
-        // Need to select nearest direction to point.
-        findNearestInNode(node.leftOrBottomNode, queryPt);
-        findNearestInNode(node.rightOrTopNode, queryPt);
+        // Should we search within node?
+        if (node.leftOrBottomNode != null
+                && node.leftOrBottomNode.rect.distanceSquaredTo(queryPt) < gNearestDist)
+            findNearestInNode(node.leftOrBottomNode, queryPt);
+        if (node.rightOrTopNode != null
+                && node.rightOrTopNode.rect.distanceSquaredTo(queryPt) < gNearestDist)
+            findNearestInNode(node.rightOrTopNode, queryPt);
     }
 
     private void areSubTreePointsInRect(KdNode node, RectHV rect, boolean horizontalX) {
