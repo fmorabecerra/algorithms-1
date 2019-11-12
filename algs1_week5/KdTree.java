@@ -207,9 +207,9 @@ public class KdTree {
                 else return 0;
             else
                 // Rectangle is below
-                if (rect.ymin() < this.point.y() && rect.ymax() < this.point.y()) return -1;
+                if (r.ymin() < this.point.y() && r.ymax() < this.point.y()) return -1;
                     // Rectangle is above
-                else if (rect.ymin() > this.point.y() && rect.ymax() > this.point.y()) return +1;
+                else if (r.ymin() > this.point.y() && r.ymax() > this.point.y()) return +1;
                     // Node line intersects rectangle.
                 else return 0;
         }
